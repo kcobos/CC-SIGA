@@ -1,4 +1,4 @@
-# CC-SIGA
+<!-- # CC-SIGA
 ## Infrastructure and deployment for SIGA
 
 This is a repository to design SIGA infrastructure on server side considering all parts involved in SIGA (sensors, APPS, storing, large tasks...).
@@ -10,4 +10,4 @@ To begin with, the system will consist of a part that will serve as an interface
 
 Continuing for client requests on the server side, the system needs two more interfaces, one for system administration and the other for final user. The first has to be more securized for obvious reasons and the second has to respond very quickly to final users requests.
 
-The entire system needs a database or several databases to store data. You could divide data storage by layers to have precalculated data to respond faster to users. In addition, it is necessary to store all histories of system states and requests for security reasons and to improve it.
+The entire system needs a database or several databases to store data. You could divide data storage by layers to have precalculated data to respond faster to users. In addition, it is necessary to store all histories of system states and requests for security reasons and to improve it. -->
