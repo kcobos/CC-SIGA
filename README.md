@@ -30,3 +30,8 @@ It is time to specify in more detail the different parts of the project. This sp
 The API Gateway we could choose is NGINX API Gateway. NGINX is a powerful load balancer, web server and reverse proxy but, also, it has a specific solution aimed at microservices‑based applications and it has a lot of [documentation](https://www.nginx.com/blog/deploying-nginx-plus-as-an-api-gateway-part-1/) . However, this solution is not free neither open source.
 
 Looking for a free and open source solution [Krakend](https://www.krakend.io/) could be the best option for an API Gateway and also it has a lot of [documentation](https://www.krakend.io/docs/overview/introduction/).
+
+### Configuration system
+A fundamental part of a microservices‑based application is configure all distributed microservices as easy as possible. Here we could face to a several configuration and service discovery tools. Due to this is a open project, we want all tools which compose the project open as well.
+
+To facilitate the decision of which configuration tool is the best for this project, the best is to see a [comparative](https://stackshare.io/service-discovery) where [Consul](https://www.consul.io/) could be the best free and open source tool. Also it has a lot of [documentation](https://www.consul.io/docs/index.html) to read.
