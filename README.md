@@ -40,3 +40,33 @@ To facilitate the decision of which configuration tool is the best for this proj
 Another fundamental part of a microservices‑based application is to log all microservices errors or information in only one site. This site could be centralized or distributed but developers wont have to see logs microservice per microservice.
 
 As the before decision, here we could see a [comparative](https://stackshare.io/log-management) where [Logstash](https://www.elastic.co/products/logstash) could be one of the best tools to centralize all logs. Moreover, we a lot of [information](https://www.elastic.co/guide/en/logstash/current/index.html) about this tool.
+
+### Microservices
+#### Parking
+This is a microservice which knows where are all parking lots and it states (free, busy or bad occupied). It has to response very quick to clients which can be users, administrators or sensor. For this reason and the concurrency of it functionality [Go Lang](https://golang.org/) could be one of the best option.
+
+On the database side, all data are going to be structured and it has to be a parking location. Due to that there are going to be geographic objects and, probably, there will be operation with these objects. For this reason, we think, [PostgreSQL](https://www.postgresql.org/) with his [PostGIS](https://postgis.net/) plugin could be the best free option.
+
+#### ParkingHist
+ParkingHist is like a log system which only saves parking lot state related data. Here we only save data when a parking lot state has changed. Maybe to do that we could chose a logging tool or made it from scratch but the solution has to be as quick as possible.
+
+About it database, all data is going to be structured so a relational DB will be the best option.
+
+#### User
+This microservice will process and store all user data like personal data or favorites, used parking lots. So this has to be a very secured and fast microservice so [Python](https://www.python.org/) and a API Rest in [Django](https://www.djangoproject.com/) could be the best option.
+
+About it database, Django [officially supports](https://docs.djangoproject.com/en/3.0/ref/databases/) PostgreSQL, MariaDB, MySQL, Oracle and SQLite. Oracle is ruled out because it is not free and SQLite too because is not for a cloud, it is for small applications or clients.
+
+About PostgreSQL, MariaDB or MySQL, MariaDB is a community-developed, commercially supported fork of the MySQL so between the other two, [in this comparative](https://db-engines.com/en/system/MariaDB%3bPostgreSQL), [MariaDB](https://mariadb.org/) could be better to do that than PostgreSQL.
+
+#### ImageProcess
+ImageProcess is a batch microservice to process images to find a vehicle identification, if any, in the picture taken when a parking lot is bad occupied. This is only called when sensors don't get any identification or get an identification which not in users and then they take a picture of the parking lot.
+
+This picture is sent to *Parking* microservice, it saves the picture in a data storage and send the picture name and a ID to a queue. ImageProcess receive these requests, process the image and reply if an identification has been found. This reply is direct and via API to *Parking* microservice.
+
+Python could be the best option to process the image due to it all [image processing libraries](https://www.datasciencecentral.com/profiles/blogs/9-python-libraries-which-can-help-you-in-image-processing). 
+
+##### Queue
+This queue is to send from *Parking* to *ImageProcess* microservices which image has going to be processed. So this queue has to be accesible from Go Lang and Python.
+
+[In this ranking](https://stackshare.io/message-queue) of message queue tools [RabittMQ](https://www.rabbitmq.com/) is good placed and it could be accessed from Go Lang and Python through [amqp](https://github.com/streadway/amqp) and [pika](https://github.com/pika/pika).
