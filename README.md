@@ -22,3 +22,10 @@ All services have to be in a same entry point. To do that, the system needs an A
 To sum that, this first approximation could be like:
 
 ![Overview scheme](./docs/CC_overview.jpeg)
+
+## Specifying the infrastructure
+It is time to specify in more detail the different parts of the project. This specification deals with the choice of programming languages to be used in the different microservices, the type and engine of the databases to be used as well as the API Gateway to be used, the logging and configuration systems and the queue to be used.
+
+Starting with something, the API Gateway we have chosen is NGINX API Gateway. NGINX is a powerful load balancer, web server and reverse proxy but, also, it has a specific solution aimed at microservices‑based applications and it has a lot of [documentation](https://www.nginx.com/blog/deploying-nginx-plus-as-an-api-gateway-part-1/) . However, this solution is not free and open source.
+
+Looking for a free and open source solution [Krakend](https://www.krakend.io/) could be the best option for an API Gateway and also it has a lot of [documentation](https://www.krakend.io/docs/overview/introduction/).
