@@ -34,4 +34,9 @@ Looking for a free and open source solution [Krakend](https://www.krakend.io/) c
 ### Configuration system
 A fundamental part of a microservices‑based application is configure all distributed microservices as easy as possible. Here we could face to a several configuration and service discovery tools. Due to this is a open project, we want all tools which compose the project open as well.
 
-To facilitate the decision of which configuration tool is the best for this project, the best is to see a [comparative](https://stackshare.io/service-discovery) where [Consul](https://www.consul.io/) could be the best free and open source tool. Also it has a lot of [documentation](https://www.consul.io/docs/index.html) to read.
+To facilitate the decision of which configuration tool is the best for this project, is better to see a [comparative](https://stackshare.io/service-discovery) where [Consul](https://www.consul.io/) could be one of the best free and open source tool. Also it has a lot of [documentation](https://www.consul.io/docs/index.html) to read. Another could be [etcd](https://etcd.io/) installed by default in cloud OS.
+
+### Logging system
+Another fundamental part of a microservices‑based application is to log all microservices errors or information in only one site. This site could be centralized or distributed but developers wont have to see logs microservice per microservice.
+
+As the before decision, here we could see a [comparative](https://stackshare.io/log-management) where [Logstash](https://www.elastic.co/products/logstash) could be one of the best tools to centralize all logs. Moreover, we a lot of [information](https://www.elastic.co/guide/en/logstash/current/index.html) about this tool.
