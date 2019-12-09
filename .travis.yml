@@ -1,0 +1,13 @@
+language: go
+
+go:
+- "1.1"
+- "1.10"
+- "1.13"
+- master
+
+script:
+  - make testGO
+
+after_success:
+  - make coverageGO
