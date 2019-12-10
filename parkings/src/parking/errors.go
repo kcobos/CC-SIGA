@@ -23,9 +23,18 @@ func (e *NotExists) Error() string {
 
 // StatusNotExists error
 type StatusNotExists struct {
-	status int
+	Status int
 }
 
 func (e *StatusNotExists) Error() string {
-	return fmt.Sprintf("Parking status %d does not exist", e.status)
+	return fmt.Sprintf("Parking status %d does not exist", e.Status)
+}
+
+// StatusNotUpdated error
+type StatusNotUpdated struct {
+	Status, IDplace int
+}
+
+func (e *StatusNotUpdated) Error() string {
+	return fmt.Sprintf("Parking status not updated. Error %d on Places (Place ID %d)", e.Status, e.IDplace)
 }

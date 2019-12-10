@@ -89,7 +89,7 @@ func (p *Parkings) DeleteParking(id int) error {
 }
 
 // UpdateStatus update the status of a Parking in the Parkings struct if the parking exists and if the status is possible (-1..4)
-func (p *Parkings) UpdateStatus(id int, status int) (bool, error) {
+func (p *Parkings) UpdateStatus(id int, status int, fAPI func(int, int) int) (bool, error) {
 	_, ok := parkingPosStatus[status]
 	if !ok {
 		return false, &StatusNotExists{status}
@@ -99,15 +99,18 @@ func (p *Parkings) UpdateStatus(id int, status int) (bool, error) {
 	}
 	par := p.parkingList[id]
 	preStatus := par.status
-	par.status = status
-	p.parkingList[id] = par
 
 	// call to places to update free parkings
+	response := 200
 	if preStatus == 0 && status != 0 {
-		// OneOccupied()
+		response = fAPI(par.placeID, -1)
 	} else if preStatus != 0 && status == 0 {
-		// OneFree()
+		response = fAPI(par.placeID, 1)
 	}
-
+	if response != 200 {
+		return false, &StatusNotUpdated{response, par.placeID}
+	}
+	par.status = status
+	p.parkingList[id] = par
 	return true, nil
 }
