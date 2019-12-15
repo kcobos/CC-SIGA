@@ -1,6 +1,11 @@
-coverageGO:
+coverageParkings:
 	go test ./parkings/src/... -cover -coverprofile .coverage.out
 	go tool cover -func=.coverage.out
-
-testGO:
+testParkings:
 	go test ./parkings/src/...
+
+coveragePlaces:
+	go test ./places/src/... -cover -coverprofile .coverage.out
+	go tool cover -func=.coverage.out
+testPlaces:
+	go test ./places/src/...

@@ -4,30 +4,6 @@ import (
 	"testing"
 )
 
-type mockPlace struct {
-	freeParkings int
-}
-
-func callPlaceAPI(idPlace int, i int) int {
-	mp, ok := mockPlaceList[idPlace]
-	ret := 404
-	if ok {
-		switch i {
-		case -1:
-			mp.freeParkings--
-			mockPlaceList[idPlace] = mp
-			ret = 200
-		case 1:
-			mp.freeParkings++
-			mockPlaceList[idPlace] = mp
-			ret = 200
-		default:
-			ret = 400
-		}
-	}
-	return ret
-}
-
 func TestValidateInit(t *testing.T) {
 	var parks Parkings
 	_, err := parks.Len()
@@ -52,9 +28,39 @@ func setup() {
 func setupMock() {
 	mockPlaceList = make(map[int]mockPlace)
 }
-func TestValidateAddParking(t *testing.T) {
+func tearDown()  {
+	parks.parkingList = nil
+	parks.lastID = 0
+	mockPlaceList = nil
+}
+
+type mockPlace struct {
+	freeParkings int
+}
+
+func mockCallPlaceAPI(idPlace int, i int) int {
+	mp, ok := mockPlaceList[idPlace]
+	ret := 404
+	if ok {
+		switch i {
+		case -1:
+			mp.freeParkings--
+			mockPlaceList[idPlace] = mp
+			ret = 200
+		case 1:
+			mp.freeParkings++
+			mockPlaceList[idPlace] = mp
+			ret = 200
+		default:
+			ret = 400
+		}
+	}
+	return ret
+}
+func TestValidateAdd(t *testing.T) {
 	setup()
-	p := parks.AddParking(21)
+	defer tearDown()
+	p := parks.Add(21)
 	if num, _ := parks.Len(); num != 1 {
 		t.Errorf("map size is not 1")
 	}
@@ -69,7 +75,7 @@ func TestValidateAddParking(t *testing.T) {
 		t.Errorf("parkings not equal")
 	}
 
-	p1 := parks.AddParking(23)
+	p1 := parks.Add(23)
 	if num, _ := parks.Len(); num != 2 {
 		t.Errorf("map size is not 2")
 	}
@@ -84,23 +90,25 @@ func TestValidateAddParking(t *testing.T) {
 		t.Errorf("parkings not equal")
 	}
 }
-func TestValidateParkingExists(t *testing.T) {
+func TestValidateExists(t *testing.T) {
 	setup()
-	parks.AddParking(21)
-	parks.AddParking(21)
-	if !parks.ParkingExists(1) {
+	defer tearDown()
+	parks.Add(21)
+	parks.Add(21)
+	if !parks.Exists(1) {
 		t.Errorf("parking 1 not exists")
 	}
-	if !parks.ParkingExists(2) {
+	if !parks.Exists(2) {
 		t.Errorf("parking 2 not exists")
 	}
-	if parks.ParkingExists(5) {
+	if parks.Exists(5) {
 		t.Errorf("parking 5 exists")
 	}
 }
 
 func TestValidateGet(t *testing.T) {
 	setup()
+	defer tearDown()
 	p, err := parks.Get(1)
 	if p.ID() != 0 || p.Status() != 0 || p.PlaceID() != 0 {
 		t.Errorf("parking not default")
@@ -111,7 +119,7 @@ func TestValidateGet(t *testing.T) {
 	if err.Error() != "Parking 1 does not exist" {
 		t.Errorf("error message not valid")
 	}
-	parks.AddParking(21)
+	parks.Add(21)
 	p, err = parks.Get(1)
 	if p.ID() != 1 || p.Status() != -1 || p.PlaceID() != 21 {
 		t.Errorf("parking not well created")
@@ -120,30 +128,31 @@ func TestValidateGet(t *testing.T) {
 		t.Errorf("error on getting 1")
 	}
 }
-func TestValidateDeleteParking(t *testing.T) {
+func TestValidateDelete(t *testing.T) {
 	setup()
-	parks.AddParking(21)
-	if err := parks.DeleteParking(1); err != nil {
+	defer tearDown()
+	parks.Add(21)
+	if err := parks.Delete(1); err != nil {
 		t.Errorf("deleting 1. Error %s", err.Error())
 	}
-	err := parks.DeleteParking(1)
+	err := parks.Delete(1)
 	if err == nil {
 		t.Errorf("deleting 1 previously deleted")
 	}
 	if err.Error() != "Parking 1 does not exist" {
 		t.Errorf("error message not valid")
 	}
-	if parks.ParkingExists(1) {
+	if parks.Exists(1) {
 		t.Errorf("parking 1 exists")
 	}
-	parks.AddParking(21)
-	if err := parks.DeleteParking(2); err != nil {
+	parks.Add(21)
+	if err := parks.Delete(2); err != nil {
 		t.Errorf("deleting 2. Error %s", err.Error())
 	}
-	if err := parks.DeleteParking(2); err == nil {
+	if err := parks.Delete(2); err == nil {
 		t.Errorf("deleting 2 previously deleted")
 	}
-	if parks.ParkingExists(2) {
+	if parks.Exists(2) {
 		t.Errorf("parking 2 exists")
 	}
 	if num, _ := parks.Len(); num != 0 {
@@ -153,51 +162,52 @@ func TestValidateDeleteParking(t *testing.T) {
 
 func TestValidateUpdateStatus(t *testing.T) {
 	setup()
-	parks.AddParking(21)
+	defer tearDown()
+	parks.Add(21)
 	setupMock()
 	mockPlaceList[21] = mockPlace{0}
 	if mockPlaceList[21].freeParkings != 0 {
-		t.Errorf("free parking is not 0 - %d", mockPlaceList[21].freeParkings)
+		t.Errorf("free parking is not 0")
 	}
-	tf, err := parks.UpdateStatus(1, -2, callPlaceAPI)
+	tf, err := parks.UpdateStatus(1, -2, mockCallPlaceAPI)
 	if tf != false || err == nil {
 		t.Errorf("status -2 passes")
 	}
 	if err.Error() != "Parking status -2 does not exist" {
 		t.Errorf("error message not valid")
 	}
-	tf, err = parks.UpdateStatus(1, 5, callPlaceAPI)
+	tf, err = parks.UpdateStatus(1, 5, mockCallPlaceAPI)
 	if tf != false || err == nil {
 		t.Errorf("status 5 passes")
 	}
 	if err.Error() != "Parking status 5 does not exist" {
 		t.Errorf("error message not valid")
 	}
-	if tf, err := parks.UpdateStatus(1, 0, callPlaceAPI); tf != true || err != nil {
+	if tf, err := parks.UpdateStatus(1, 0, mockCallPlaceAPI); tf != true || err != nil {
 		t.Errorf("status 0 not passes")
 	}
 	if mockPlaceList[21].freeParkings != 1 {
 		t.Errorf("no free parking")
 	}
-	if tf, err := parks.UpdateStatus(1, 1, callPlaceAPI); tf != true || err != nil {
+	if tf, err := parks.UpdateStatus(1, 1, mockCallPlaceAPI); tf != true || err != nil {
 		t.Errorf("status 1 not passes")
 	}
 	if mockPlaceList[21].freeParkings != 0 {
 		t.Errorf("free parking")
 	}
 	for st := -1; st < 5; st++ {
-		if tf, err := parks.UpdateStatus(1, st, callPlaceAPI); tf != true || err != nil {
+		if tf, err := parks.UpdateStatus(1, st, mockCallPlaceAPI); tf != true || err != nil {
 			t.Errorf("status %d not passes", st)
 		}
 	}
 
-	tf, err = parks.UpdateStatus(2, 0, callPlaceAPI)
+	tf, err = parks.UpdateStatus(2, 0, mockCallPlaceAPI)
 	if tf != false || err == nil {
 		t.Errorf("no parking 2 passes")
 	}
 
-	parks.AddParking(3)
-	tf, err = parks.UpdateStatus(2, 0, callPlaceAPI)
+	parks.Add(3)
+	tf, err = parks.UpdateStatus(2, 0, mockCallPlaceAPI)
 	if tf != false || err == nil {
 		t.Errorf("parking 2 no place passes")
 	}
