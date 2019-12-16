@@ -7,5 +7,7 @@ go:
 - master
 
 script:
-  - make testParkings
-  - make testPlaces
+  - make test
+  
+after_success:
+  - bash <(curl -s https://codecov.io/bash)

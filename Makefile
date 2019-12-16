@@ -9,3 +9,5 @@ coveragePlaces:
 	go tool cover -func=.coverage.out
 testPlaces:
 	go test ./places/src/...
+
+test: testParkings testPlaces
