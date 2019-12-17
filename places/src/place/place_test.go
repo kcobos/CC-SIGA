@@ -177,8 +177,18 @@ func TestValidateDeleteParking(t *testing.T) {
 	if place.NumParkings() != 3 {
 		t.Errorf("no parking added")
 	}
-
+	lastID := mockParkingList.lastID
+	list := mockParkingList.list
+	mockParkingList.lastID = 0
+	mockParkingList.list = nil
 	err := place.DeleteParking(1, mockCallParkingDeleteAPI)
+	if err == nil {
+		t.Errorf("no error when API fails")
+	}
+	mockParkingList.lastID = lastID
+	mockParkingList.list = list
+
+	err = place.DeleteParking(1, mockCallParkingDeleteAPI)
 	if err != nil {
 		t.Errorf("error on deleting parking")
 	}
@@ -283,11 +293,20 @@ func TestValidateDelete(t *testing.T) {
 	if num, _ := placs.Len(); num != 1 {
 		t.Errorf("map size is not 1")
 	}
+	lastID := mockParkingList.lastID
+	list := mockParkingList.list
+	mockParkingList.lastID = 0
+	mockParkingList.list = nil
 	err := placs.Delete(1, mockCallParkingDeleteAPI)
+	if err == nil {
+		t.Errorf("no error when API fails")
+	}
+	mockParkingList.lastID = lastID
+	mockParkingList.list = list
+	err = placs.Delete(1, mockCallParkingDeleteAPI)
 	if err != nil {
 		t.Errorf("error deleting place 1")
 	}
-
 	err = placs.Delete(1, mockCallParkingDeleteAPI)
 	if err == nil {
 		t.Errorf("error deleting place 1 not exists")
@@ -297,6 +316,39 @@ func TestValidateDelete(t *testing.T) {
 	}
 }
 
-// func TestValidate_(t *testing.T) {
-// 	setup()
-// }
+func TestValidateOneFreed(t *testing.T) {
+	setup()
+	setupMock()
+	defer tearDown()
+	place, _ := placs.Add(37.19742395414327, -3.624779980964916,
+		"Calle Periodista Daniel Saucedo Aranda, 18014 Granada", mockCallParkingAddAPI)
+	place.AddParking(mockCallParkingAddAPI)
+	place.AddParking(mockCallParkingAddAPI)
+	place.OneFreed()
+	if place.FreeParkings() != 1 {
+		t.Errorf("OneFreed not working")
+	}
+	place.OneFreed()
+	if place.FreeParkings() != 2 {
+		t.Errorf("OneFreed not working")
+	}
+}
+func TestValidateOneOccupied(t *testing.T) {
+	setup()
+	setupMock()
+	defer tearDown()
+	place, _ := placs.Add(37.19742395414327, -3.624779980964916,
+		"Calle Periodista Daniel Saucedo Aranda, 18014 Granada", mockCallParkingAddAPI)
+	place.AddParking(mockCallParkingAddAPI)
+	place.AddParking(mockCallParkingAddAPI)
+	place.OneFreed()
+	place.OneFreed()
+	place.OneOccupied()
+	if place.FreeParkings() != 1 {
+		t.Errorf("OneOccupied not working")
+	}
+	place.OneOccupied()
+	if place.FreeParkings() != 0 {
+		t.Errorf("OneOccupied not working")
+	}
+}
