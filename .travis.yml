@@ -42,15 +42,69 @@ jobs:
         - bash <(curl -s https://codecov.io/bash) -cF go
 
     - stage: test
-      name: "Python tests"
+      name: "Python 3.0 tests"
+      language: python
+      python:
+        - "3.0"
+      install:
+        - make usersDependencies
+      script:
+        - make pythonTest
+      after_success:
+          - make pythonCoverage
+          - bash <(curl -s https://codecov.io/bash) -cF python
+    - stage: test
+      name: "Python 3.4 tests"
       language: python
       python:
         - "3.4"
-        - "3.5"
-        - "3.6"
+      install:
+        - make usersDependencies
+      script:
+        - make pythonTest
+      after_success:
+          - make pythonCoverage
+          - bash <(curl -s https://codecov.io/bash) -cF python
+    - stage: test
+      name: "Python 3.7 tests"
+      language: python
+      python:
         - "3.7"
+      install:
+        - make usersDependencies
+      script:
+        - make pythonTest
+      after_success:
+          - make pythonCoverage
+          - bash <(curl -s https://codecov.io/bash) -cF python
+    - stage: test
+      name: "Python 3.8 tests"
+      language: python
+      python:
         - "3.8"
-        - "3.8-dev" 
+      install:
+        - make usersDependencies
+      script:
+        - make pythonTest
+      after_success:
+          - make pythonCoverage
+          - bash <(curl -s https://codecov.io/bash) -cF python
+    - stage: test
+      name: "Python 3.8-dev tests"
+      language: python
+      python:
+        - "3.8-dev"
+      install:
+        - make usersDependencies
+      script:
+        - make pythonTest
+      after_success:
+          - make pythonCoverage
+          - bash <(curl -s https://codecov.io/bash) -cF python
+    - stage: test
+      name: "Python nightly tests"
+      language: python
+      python: 
         - "nightly"
       install:
         - make usersDependencies
