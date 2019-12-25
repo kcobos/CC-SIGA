@@ -34,8 +34,8 @@ class TestUser(unittest.TestCase):
         self.assertEqual(u.username, "test")
         self.assertEqual(len(u.password), 128)
         self.assertEqual(u.password, hashlib.sha512("My#PasS123".encode('utf-8')).hexdigest().upper())
-        self.assertCountEqual(u.recent, [])
-        self.assertCountEqual(u.favorites, [])
+        self.assertEqual(u.recent, [])
+        self.assertEqual(u.favorites, [])
         self.assertIsNone(u.expiring_date)
         self.assertEqual(u.uid, 0)
     
