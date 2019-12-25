@@ -41,18 +41,7 @@ jobs:
         - make goCoverage
         - bash <(curl -s https://codecov.io/bash) -cF go
 
-    - stage: test
-      name: "Python pypy3 tests"
-      language: python
-      python:
-        - "pypy3"
-      install:
-        - make usersDependencies
-      script:
-        - make pythonTest
-      after_success:
-          - make pythonCoverage
-          - bash <(curl -s https://codecov.io/bash) -cF python
+
     - stage: test
       name: "Python 3.4 tests"
       language: python
