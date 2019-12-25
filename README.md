@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/kcobos/CC-SIGA.svg?branch=master)](https://travis-ci.org/kcobos/CC-SIGA)
 [![codecov](https://codecov.io/gh/kcobos/CC-SIGA/branch/master/graph/badge.svg)](https://codecov.io/gh/kcobos/CC-SIGA)
+[![GPL Licence](https://badges.frapsoft.com/os/gpl/gpl.png?v=103)](https://opensource.org/licenses/GPL-3.0/)
 
 # CC-SIGA
 This is a repository to design SIGA infrastructure on server side considering all parts involved in SIGA (sensors, APPS, storing, large tasks...).
