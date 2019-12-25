@@ -12,7 +12,7 @@ jobs:
         - make goTest
       after_success:
         - make goCoverage
-        - bash < (curl -s https://codecov.io/bash) -cF go
+        - bash <(curl -s https://codecov.io/bash) -cF go
 
     - stage: test
       name: "Python tests"
@@ -31,4 +31,4 @@ jobs:
         - make pythonTest
       after_success:
           - make pythonCoverage
-          - bash < (curl -s https://codecov.io/bash) -cF python
+          - bash <(curl -s https://codecov.io/bash) -cF python
