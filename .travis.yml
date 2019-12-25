@@ -1,12 +1,45 @@
 jobs:
   include:
     - stage: test
-      name: "Go tests"
+      name: "Go 1.3 tests"
       language: go
       go:
         - "1.3"
         - "1.10"
         - "1.13"
+        - master
+      script:
+        - make goTest
+      after_success:
+        - make goCoverage
+        - bash <(curl -s https://codecov.io/bash) -cF go
+  include:
+    - stage: test
+      name: "Go 1.10 tests"
+      language: go
+      go:
+        - "1.10"
+      script:
+        - make goTest
+      after_success:
+        - make goCoverage
+        - bash <(curl -s https://codecov.io/bash) -cF go
+  include:
+    - stage: test
+      name: "Go 1.13 tests"
+      language: go
+      go:
+        - "1.13"
+      script:
+        - make goTest
+      after_success:
+        - make goCoverage
+        - bash <(curl -s https://codecov.io/bash) -cF go
+  include:
+    - stage: test
+      name: "Go master tests"
+      language: go
+      go:
         - master
       script:
         - make goTest
