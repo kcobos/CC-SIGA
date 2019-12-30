@@ -60,3 +60,9 @@ We want to separate every microservice and each one must to have each build tool
 In [Make](Makefile) we have created two rules for each microservice: one for testing and other for coverage except in `Users` that we have other to install dependencies but there isn't now. 
 
 To test all microservices of a language, there is another rule to make it easier. The same for coverage.
+
+To sum all, the buildtool is [make](https://www.gnu.org/software/make/) and the rules are:
+ * [microserviceName]Test: test that microservice.
+ * [microserviceName]Coverage: test and coverage that microservice.
+ * [languageName]Test: test that language (Go or Python).
+ * [languageName]Coverage: test and coverage that language (Go or Python).
