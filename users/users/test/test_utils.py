@@ -2,9 +2,7 @@
 
 import os, sys, unittest
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)) + '/../')
-
-import utils
+from .. import utils
 
 class TestUtils(unittest.TestCase):
     def test_check_password_strength(self):

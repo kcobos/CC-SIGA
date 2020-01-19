@@ -2,11 +2,9 @@
 
 import os, sys, unittest
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)) + '/../')
-
-from users import Users
-from user import User
-import errors
+from ..users import Users
+from ..user import User
+from .. import errors
 from datetime import date, timedelta
 
 class TestUsers(unittest.TestCase):

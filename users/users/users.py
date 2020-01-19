@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import user, errors
+from . import user, errors
 from datetime import date
 
 class Users:

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import utils, errors, settings
+from . import utils, errors, settings
 from datetime import date
 import hashlib
 

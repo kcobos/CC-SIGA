@@ -4,12 +4,10 @@ import os, sys, unittest
 from datetime import date, timedelta
 import hashlib
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)) + '/../')
-
-from user import User
-import settings
-import errors 
-import utils
+from ..user import User
+from .. import settings
+from .. import errors 
+from .. import utils
 
 class TestUser(unittest.TestCase):
     def setUp(self):
